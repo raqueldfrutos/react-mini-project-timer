@@ -28,7 +28,7 @@ const Timer = () => {
     timerRef.current = null;
   };
   return (
-    <div className="max-w-md mx-auto text-center">
+    <div>
       <TimerDisplay time={time} />
       <TimerControls
         toggleTimer={toggleTimer}

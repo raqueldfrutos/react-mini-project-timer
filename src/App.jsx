@@ -1,7 +1,11 @@
 import Timer from "./components/Timer";
 
 const App = () => {
-  return <Timer />;
+  return (
+    <div className="max-w-md mx-auto text-center mt-10 p-6 bg-gray-100 rounded-lg shadow-lg">
+      <Timer />
+    </div>
+  );
 };
 
 export default App;
