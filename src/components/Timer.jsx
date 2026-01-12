@@ -1,21 +1,40 @@
+import TimerControls from "./TimerControls";
 import TimerDisplay from "./TimerDisplay";
-const Timer = ({ time, toggleTimer, resetTimer, isRunning }) => {
+import { useState, useRef } from "react";
+
+const Timer = () => {
+  const timerRef = useRef(null);
+  const [time, setTime] = useState(0); //time is the variable that saves the display value
+  const [isRunning, setIsRunning] = useState(false);
+
+  const toggleTimer = () => {
+    if (isRunning) {
+      //  Clear interval to stop the timer
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    } else {
+      // Star timer
+      timerRef.current = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000); // we are incresing 1 every 1 milisecond = 1 second. setInterval returns an Id which we are puttin to the ref
+    }
+    setIsRunning(!isRunning);
+  };
+
+  const resetTimer = () => {
+    clearInterval(timerRef.current);
+    setIsRunning(false);
+    setTime(0);
+    timerRef.current = null;
+  };
   return (
     <div className="max-w-md mx-auto text-center">
       <TimerDisplay time={time} />
-
-      <button
-        onClick={toggleTimer}
-        className="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mr-3"
-      >
-        {isRunning ? "Pause" : "Start"}
-      </button>
-      <button
-        onClick={resetTimer}
-        className="mt-3 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-      >
-        Reset
-      </button>
+      <TimerControls
+        toggleTimer={toggleTimer}
+        isRunning={isRunning}
+        resetTimer={resetTimer}
+      />
     </div>
   );
 };
