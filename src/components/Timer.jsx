@@ -1,11 +1,17 @@
 import TimerControls from "./TimerControls";
 import TimerDisplay from "./TimerDisplay";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const Timer = () => {
   const timerRef = useRef(null);
-  const [time, setTime] = useState(0); //time is the variable that saves the display value
+  const [time, setTime] = useState(() => {
+    return Number(localStorage.getItem("time") || 0);
+  }); //time is the variable that saves the display value
   const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("time", time);
+  }, [time]);
 
   const toggleTimer = () => {
     if (isRunning) {
@@ -26,6 +32,7 @@ const Timer = () => {
     setIsRunning(false);
     setTime(0);
     timerRef.current = null;
+    localStorage.removeItem("time");
   };
   return (
     <div>
